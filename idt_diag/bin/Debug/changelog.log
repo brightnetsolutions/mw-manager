@@ -1,0 +1,124 @@
+MW Manager Change Log
+======================
+
+LAST UPDATED: 19/04/2016
+ICON CREATED: Icon made by Freepik(http://www.flaticon.com/authors/freepik) from www.flaticon.com 
+
+UNRELEASED:
+
+VER 0.01:
+-Added project MW Manager
+-Added two interface (server and client)
+-Added DatagridView for both interface
+-Added connection to database
+-Added query from client and server side
+-Added diagnostic class and functionality:
+	i. 		Get PC NAME
+	ii.		Get IP Address
+	iii.	Copy from client to server
+	iv.		Transfer from server to client
+	v.		Get MW ver
+	vi.		Get OS name
+	vii.	Get OS 
+	viii.	Check firewall
+	ix.		Restart computer
+-Added setting file for config.
+-Create two database table:
+	i. 		jimUdtLive
+	ii. 	jimUdtHist
+
+VER 0.02:
+-Remove client connection to database, only server has read/write command.
+-Remove datagridview from client, replaced with normal form interface
+
+VER 0.03:
+-Added SCS framework for better and simpler client server connection.
+-Removed settings file, replaced with INI file.
+-Added diagnostic functionality:
+	i.		Get Threads and Handles for MW and ReaderDemo
+	ii.		Get remaining disk space for client and server
+	iii.	Move file
+	iv.		Get uptime
+	v.		Check hitdata database connection.
+-Added bulk messaging from server to client
+-Added reply messaging from client to server
+-Added live log for server side
+-Added client notifications.
+
+VER 0.04:
+-Fixed database connection
+-Fixed bulk messaging
+-Fixed timing for bulk messaging
+-Added minimized to taskbar
+-Added icon for MW Manager
+
+VER 1.2
+
+-Added diagnostic functionality:
+	i.	Ping Google Address(Pass/Fail)
+	ii.	Ping 8.8.8.8(Pass/Fail)
+	iii.	Graphic driver detection
+	iv.	Bios Serial Number
+	v.	Regula SDK Version
+	vi.	Reader Driver Version
+	vii.	Regula SDK Database Version
+-Added colors for PASS(green) and FAIL(red)
+-Fix for server security password
+-Change display for hard disk usage ___GB(__%)
+
+RELEASED:
+
+VER 1.0
+
+-Diagnostic functionality:
+	i. 	Get PC NAME
+	ii.	Get IP Address
+	iii.	Copy from client to server
+	iv.	Transfer from server to client
+	v.	Get MW ver
+	vi.	Get OS name
+	vii.	Get OS 
+	viii.	Check firewall
+	ix.	Restart computer
+	x.	Get Threads and Handles for MW and ReaderDemo
+	xi.	Get remaining disk space for client and server
+	xii.	Move file
+	xiii.	Get uptime
+	xiv.	Check hitdata database connection.
+-Client and server communication using SCS client
+-Live connection log
+-Bulk Client messaging
+-Client connection and messaging log
+-Async RD images transfer(Client -> Server)
+-Async MW Update(Client -> Server)
+-Client notifications for:
+	i.	Over 24 hours uptime
+	ii.	High Threads and Handles for MW and ReaderDemo
+	iii. 	Update for MW available 
+
+VER 1.2.1
+
+-Fix for failed Google and 8.8.8.8 ping causing system crash.
+-Added update for SDK
+-Added transfer hitdata database (regional server only)
+-Added update via batch file feature.
+-Added self updating feature. 
+-Added reconnection feature.
+-Added self reconnection feature.
+-Added security for menu(hidden with button combination)
+-Added only close through menu function.
+
+VER 1.3.0
+
+-Fix reconnection feature.
+-Added Neurotech License detection.
+-Added Scanner connection detection.
+-Added VIP counter detection.
+-Added Hitdata transfer to hq(database only)
+
+VER 1.3.2
+
+-Fixed Neurotech license detection issue.
+-Optimizing data refresh rate.
+-Added refresh button.
+-Added reconnect button.

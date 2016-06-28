@@ -1,0 +1,44 @@
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\Interop.NetFwTypeLib.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csproj.ResolveComReference.cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.frm_clt.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.frm_slct.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.settings.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csproj.GenerateResource.Cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\INIFileParser.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\Scs.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\INIFileParser.xml
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\Scs.xml
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.clt_uc.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\idt_diag.svr_uc.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.svr_settings.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.about.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.exe.config
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.Properties.Resources.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.Form1.resources
+D:\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.exe.config
+D:\Projects\idt_diag\idt_diag\obj\Release\Interop.NetFwTypeLib.dll
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csproj.ResolveComReference.cache
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.exe
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.pdb
+D:\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.exe
+D:\Projects\idt_diag\idt_diag\bin\Release\mw_mgr.pdb
+D:\Projects\idt_diag\idt_diag\bin\Release\INIFileParser.dll
+D:\Projects\idt_diag\idt_diag\bin\Release\Scs.dll
+D:\Projects\idt_diag\idt_diag\bin\Release\INIFileParser.xml
+D:\Projects\idt_diag\idt_diag\bin\Release\Scs.xml
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csprojResolveAssemblyReference.cache
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.about.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.clt_uc.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.Form1.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.frm_clt.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.frm_slct.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.Properties.Resources.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.settings.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\mw_mgr.svr_settings.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.svr_uc.resources
+D:\Projects\idt_diag\idt_diag\obj\Release\idt_diag.csproj.GenerateResource.Cache

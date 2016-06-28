@@ -1,0 +1,44 @@
+c:\users\user\documents\visual studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csprojResolveAssemblyReference.cache
+c:\users\user\documents\visual studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csproj.GenerateResource.Cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\Interop.NetFwTypeLib.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csproj.ResolveComReference.cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.settings.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.frm_clt.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.frm_slct.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\INIFileParser.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\INIFileParser.xml
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.clt_uc.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.svr_uc.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\Scs.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\Scs.xml
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.svr_settings.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.about.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.exe.config
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.Properties.Resources.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.Form1.resources
+D:\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.exe.config
+D:\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.exe
+D:\Projects\idt_diag\idt_diag\bin\Debug\mw_mgr.pdb
+D:\Projects\idt_diag\idt_diag\bin\Debug\INIFileParser.dll
+D:\Projects\idt_diag\idt_diag\bin\Debug\Scs.dll
+D:\Projects\idt_diag\idt_diag\bin\Debug\INIFileParser.xml
+D:\Projects\idt_diag\idt_diag\bin\Debug\Scs.xml
+D:\Projects\idt_diag\idt_diag\obj\Debug\Interop.NetFwTypeLib.dll
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csproj.ResolveComReference.cache
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.about.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.clt_uc.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.Form1.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.frm_clt.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.frm_slct.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.Properties.Resources.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.settings.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.svr_settings.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.svr_uc.resources
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csproj.GenerateResource.Cache
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.exe
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.pdb
+D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csprojResolveAssemblyReference.cache
