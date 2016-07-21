@@ -200,12 +200,20 @@ namespace idt_diag
 
         public String getAllNotTRansferred()
         {
-            return "select * from jimScnTrx J where J.scnDbCopy IS NULL";
+            return "select * from jimScnTrx J where J.scnDbCopy IS NULL and J.scnDTCopy IS NOT NULL";
         }
 
         public String getAllData()
         {
             return "select * from jimScnTrx";
+        }
+
+        public String getLoc()
+        {
+            var parser = new FileIniDataParser();
+            data = parser.ReadFile("app_set.ini");
+
+            return "select * from jimScnTrx where scnIDLoca <> '"+data["HITDATA"]["AIR_LOC"]+"'";
         }
 
         public String getAllDataNotTransferred()
@@ -243,6 +251,85 @@ namespace idt_diag
 
                 return pset;
             }catch(Exception e)
+            {
+                pset = null;
+                return pset;
+            }
+        }
+
+        public DataSet verifyLoc()
+        {
+            DataSet pset;
+            try
+            {
+                var parser = new FileIniDataParser();
+                data = parser.ReadFile("app_set.ini");
+
+                SqlConnection Reconn = new SqlConnection();
+                Reconn.ConnectionString = connString(data["DATABASE"]["DATA SOURCE"], data["MW"]["CATALOG"], data["DATABASE"]["USER"], data["DATABASE"]["PASSWORD"]);
+                pset = new DataSet();
+                sql_adp = new SqlDataAdapter(getLoc(), Reconn.ConnectionString);
+                sql_adp.SelectCommand.CommandTimeout = 3600;
+                sql_adp.Fill(pset);
+
+                return pset;
+            }
+            catch (Exception e)
+            {
+                pset = null;
+                return pset;
+            }
+        }
+
+        public DataSet verifyData(string mode)
+        {
+            DataSet pset;
+            try
+            {
+                var parser = new FileIniDataParser();
+                data = parser.ReadFile("app_set.ini");
+
+                SqlConnection Reconn = new SqlConnection();
+                if(mode == "regional")
+                {
+                    Reconn.ConnectionString = connString(data["DATABASE"]["DATA SOURCE"], data["MW"]["CATALOG"], data["DATABASE"]["USER"], data["DATABASE"]["PASSWORD"]);
+                }
+                else
+                {
+                    Reconn.ConnectionString = connString(data["NETWORK"]["HQ1"], data["MW"]["CATALOG"], data["DATABASE"]["USER"], data["DATABASE"]["PASSWORD"]);
+                }
+                pset = new DataSet();
+                sql_adp = new SqlDataAdapter(getAllDataNotTransferred(), Reconn.ConnectionString);
+                sql_adp.SelectCommand.CommandTimeout = 3600;
+                sql_adp.Fill(pset);
+
+                return pset;
+            }
+            catch (Exception e)
+            {
+                pset = null;
+                return pset;
+            }
+        }
+
+        public DataSet serverdata()
+        {
+            DataSet pset;
+            try
+            {
+                var parser = new FileIniDataParser();
+                data = parser.ReadFile("app_set.ini");
+
+                SqlConnection Reconn = new SqlConnection();
+                Reconn.ConnectionString = connString(data["NETWORK"]["HQ1"], data["MW"]["CATALOG"], data["DATABASE"]["USER"], data["DATABASE"]["PASSWORD"]);
+                pset = new DataSet();
+                sql_adp = new SqlDataAdapter(getAllData(), Reconn.ConnectionString);
+                sql_adp.SelectCommand.CommandTimeout = 3600;
+                sql_adp.Fill(pset);
+
+                return pset;
+            }
+            catch (Exception e)
             {
                 pset = null;
                 return pset;
@@ -306,6 +393,7 @@ namespace idt_diag
                 return true;
             }catch(Exception e)
             {
+                MessageBox.Show(e.Message.ToString());
                 return false;
             }
         }
@@ -348,6 +436,57 @@ namespace idt_diag
             sql_adp.UpdateCommand = build.GetUpdateCommand();
             sql_adp.UpdateCommand.CommandTimeout = 3600;
             sql_adp.Update(pset);
+        }
+
+        public Boolean transferToHq(DataSet pset)
+        {
+            try
+            {
+                var parser = new FileIniDataParser();
+                data = parser.ReadFile("app_set.ini");
+
+                SqlConnection HQconn = new SqlConnection();
+                HQconn.ConnectionString = connString(data["NETWORK"]["HQ1"], data["MW"]["CATALOG"], data["DATABASE"]["USER"], data["DATABASE"]["PASSWORD"]);
+
+                DataSet HQResults = new DataSet();
+                SqlDataAdapter HQadapt = new SqlDataAdapter(getAllData(), HQconn.ConnectionString);
+                HQadapt.Fill(HQResults);
+
+                int count = 1;
+                int total = 0;
+
+
+                if (HQResults.Tables[0].Rows.Count != 0)
+                {
+                    DataRow tempRow = HQResults.Tables[0].Rows[HQResults.Tables[0].Rows.Count - 1];
+                    total = int.Parse(tempRow[0].ToString());
+                }
+
+                foreach (DataRow row in pset.Tables[0].Rows)
+                {
+                    DataRow newrow = HQResults.Tables[0].NewRow();
+
+                    newrow.ItemArray = row.ItemArray;
+                    newrow[0] = count + total;
+
+                    HQResults.Tables[0].Rows.Add(newrow);
+
+                    count++;
+                }
+                SqlCommandBuilder hqComm = new SqlCommandBuilder(HQadapt);
+
+                HQadapt.Update(HQResults);
+
+                HQadapt.Dispose();
+
+                HQadapt = null;
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public void disposeAdapter()

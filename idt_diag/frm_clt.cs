@@ -280,7 +280,17 @@ namespace idt_diag
 
         private void verifyHitdataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            server_control.verifyHitdata();
+            server_control.verifyHitdata("regional");
+        }
+
+        private void transferHitdataNetworkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            server_control.transferZipNetwork();
+        }
+
+        private void verifyHitdataToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            server_control.verifyHitdata("hq");
         }
     }
 }

@@ -42,18 +42,20 @@
             this.moveMWLogsFromClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveRDImagesFromClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkDBLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.verifyHitdataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hQServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferHitdataDBOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferHitdataDBAndFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferZipDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.purgeDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transferHitdataNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.verifyHitdataToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rollbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usr_cont = new System.Windows.Forms.UserControl();
             this.notify_01 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.verifyHitdataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -160,13 +162,22 @@
             this.checkDBLocationToolStripMenuItem.Text = "Check DB Location";
             this.checkDBLocationToolStripMenuItem.Click += new System.EventHandler(this.checkDBLocationToolStripMenuItem_Click);
             // 
+            // verifyHitdataToolStripMenuItem
+            // 
+            this.verifyHitdataToolStripMenuItem.Name = "verifyHitdataToolStripMenuItem";
+            this.verifyHitdataToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.verifyHitdataToolStripMenuItem.Text = "Verify Hitdata";
+            this.verifyHitdataToolStripMenuItem.Click += new System.EventHandler(this.verifyHitdataToolStripMenuItem_Click);
+            // 
             // hQServerToolStripMenuItem
             // 
             this.hQServerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.transferHitdataDBOnlyToolStripMenuItem,
             this.transferHitdataDBAndFileToolStripMenuItem,
             this.transferZipDataToolStripMenuItem,
-            this.purgeDataToolStripMenuItem});
+            this.purgeDataToolStripMenuItem,
+            this.transferHitdataNetworkToolStripMenuItem,
+            this.verifyHitdataToolStripMenuItem1});
             this.hQServerToolStripMenuItem.Name = "hQServerToolStripMenuItem";
             this.hQServerToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.hQServerToolStripMenuItem.Text = "HQ Server";
@@ -198,6 +209,20 @@
             this.purgeDataToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.purgeDataToolStripMenuItem.Text = "Purge Hitdata";
             this.purgeDataToolStripMenuItem.Click += new System.EventHandler(this.purgeDataToolStripMenuItem_Click);
+            // 
+            // transferHitdataNetworkToolStripMenuItem
+            // 
+            this.transferHitdataNetworkToolStripMenuItem.Name = "transferHitdataNetworkToolStripMenuItem";
+            this.transferHitdataNetworkToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
+            this.transferHitdataNetworkToolStripMenuItem.Text = "Transfer Hitdata (Network)";
+            this.transferHitdataNetworkToolStripMenuItem.Click += new System.EventHandler(this.transferHitdataNetworkToolStripMenuItem_Click);
+            // 
+            // verifyHitdataToolStripMenuItem1
+            // 
+            this.verifyHitdataToolStripMenuItem1.Name = "verifyHitdataToolStripMenuItem1";
+            this.verifyHitdataToolStripMenuItem1.Size = new System.Drawing.Size(228, 22);
+            this.verifyHitdataToolStripMenuItem1.Text = "Verify Hitdata";
+            this.verifyHitdataToolStripMenuItem1.Click += new System.EventHandler(this.verifyHitdataToolStripMenuItem1_Click);
             // 
             // updateToolStripMenuItem
             // 
@@ -242,13 +267,6 @@
             this.notify_01.Icon = ((System.Drawing.Icon)(resources.GetObject("notify_01.Icon")));
             this.notify_01.Text = "MW Manager";
             this.notify_01.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notify_01_MouseDoubleClick);
-            // 
-            // verifyHitdataToolStripMenuItem
-            // 
-            this.verifyHitdataToolStripMenuItem.Name = "verifyHitdataToolStripMenuItem";
-            this.verifyHitdataToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.verifyHitdataToolStripMenuItem.Text = "Verify Hitdata";
-            this.verifyHitdataToolStripMenuItem.Click += new System.EventHandler(this.verifyHitdataToolStripMenuItem_Click);
             // 
             // frm_clt
             // 
@@ -301,6 +319,8 @@
         private System.Windows.Forms.ToolStripMenuItem transferZipDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem purgeDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem verifyHitdataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transferHitdataNetworkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem verifyHitdataToolStripMenuItem1;
     }
 }
 
