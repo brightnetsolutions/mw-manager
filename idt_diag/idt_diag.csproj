@@ -57,6 +57,7 @@
       <HintPath>..\packages\ini-parser.2.2.4\lib\net20\INIFileParser.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Scs, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SCS.1.1.0.1\lib\net40\Scs.dll</HintPath>
       <Private>True</Private>
@@ -88,6 +89,12 @@
     </Compile>
     <Compile Include="clt_uc.Designer.cs">
       <DependentUpon>clt_uc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="comp_obj.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="comp_obj.Designer.cs">
+      <DependentUpon>comp_obj.cs</DependentUpon>
     </Compile>
     <Compile Include="db_conn.cs" />
     <Compile Include="Form1.cs">
@@ -138,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="clt_uc.resx">
       <DependentUpon>clt_uc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="comp_obj.resx">
+      <DependentUpon>comp_obj.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

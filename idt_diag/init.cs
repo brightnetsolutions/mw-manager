@@ -42,38 +42,6 @@ namespace idt_diag
             string productName = (string)reg.GetValue("ProductName");
 
             return productName;
-            //if (OS.Contains("5.0"))
-            //{
-            //    return "Windows 2000";
-            //}
-            //else if (OS.Contains("5.1"))
-            //{
-            //    return "Windows XP";
-            //}
-            //else if (OS.Contains("5.2"))
-            //{
-            //    return "Windows XP 64-Bit Edition";
-            //}
-            //else if (OS.Contains("6.0"))
-            //{
-            //    return "Windows Vista";
-            //}
-            //else if (OS.Contains("6.1"))
-            //{
-            //    return "Windows 7";
-            //}
-            //else if (OS.Contains("6.2"))
-            //{
-            //    return "Windows 8/8.1";
-            //}
-            //else if (OS.Contains("6.2.9"))
-            //{
-            //    return "Windows 10";
-            //}
-            //else
-            //{
-            //    return "Unknown";
-            //}
         }
 
         public int OSBit()
@@ -579,5 +547,66 @@ namespace idt_diag
             String dat = data["GBXCFGS"]["CHXVVIP"];
             return Boolean.Parse(data["GBXCFGS"]["CHXVVIP"].Remove(dat.IndexOf(' ')));
         }
+
+        public int GetTotalMemoryInGBytes()
+        {
+            ulong ram = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
+            double gb = Math.Pow(1024, 3);
+            int tot_ram = Convert.ToInt32(ram/gb);
+
+            return tot_ram;
+        }
+
+        public string GetNetFramework()
+        {
+            string productName = "";
+            int productVer;
+
+            var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
+
+            if (reg != null)
+            {
+                productVer = (int)reg.GetValue("Release");
+
+                if (productVer == 378389)
+                {
+                    productName = "4.5";
+                }
+                else if (productVer == 378675)
+                {
+                    productName = "4.5.1";
+                }
+                else if (productVer == 378758)
+                {
+                    productName = "4.5.1";
+                }
+                else if (productVer == 379893)
+                {
+                    productName = "4.5.2";
+                }
+                else if (productVer == 393295 || productVer == 393297)
+                {
+                    productName = "4.6";
+                }
+                else if (productVer == 394254 || productVer == 394271)
+                {
+                    productName = "4.6.1";
+                }
+                else
+                {
+                    productName = "4.6.2";
+                }
+
+            }
+            else
+            {
+                reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP");
+
+                productName = (string)reg.GetValue("Version");
+            }
+
+            return productName;
+        }
+        
     }
 }

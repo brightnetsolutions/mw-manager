@@ -66,6 +66,14 @@ VER 1.2
 -Fix for server security password
 -Change display for hard disk usage ___GB(__%)
 
+VER 1.4
+
+-Added manual hitdata transfer
+-Added hitdata purge
+-Added hitdata replicate removal
+-Added log page
+-Added transfer zip file only to HQ server
+
 RELEASED:
 
 VER 1.0
@@ -116,9 +124,26 @@ VER 1.3.0
 -Added VIP counter detection.
 -Added Hitdata transfer to hq(database only)
 
-VER 1.3.2
+VER 1.3.1
 
 -Fixed Neurotech license detection issue.
 -Optimizing data refresh rate.
 -Added refresh button.
 -Added reconnect button.
+
+VER 1.5
+
+-Added manual hitdata transfer
+-Added hitdata transfer via network
+-Added hitdata purge
+-Added hitdata replicate removal
+-Added log page(client and user)
+-Added transfer zip file only to HQ server
+-Added hitdata purge in client side
+-Added ram and .net framework detection in client side
+-Added hitdata data verification (client and server)
+-Fixed CSV collection.
+-Change UI in client and server side
+-Change get rd, zip and logs algorithm
+-Change restart algorithm
+-Change copying update algorithm

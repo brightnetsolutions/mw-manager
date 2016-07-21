@@ -313,10 +313,16 @@ namespace idt_diag
             lbl_regulaver.Text = init_cls.GETReaderSDK();
             lbl_reguladb.Text = init_cls.GETReaderDB();
             lbl_driver_ver.Text = init_cls.GETReaderDriver();
-            lbl_cam.Text = init_cls.getCamera();
+            if (init_cls.getCamera() != "")
+            {
+                lbl_cam.Text = init_cls.getCamera();
+            }
             lbl_rd_size.Text = init_cls.GetDirSize(data["MW"]["RD_LOC"]) + " GB";
+            lbl_zip_size.Text = init_cls.GetDirSize(data["HITDATA"]["LCL_HITDATA"]) + " GB";
             lbl_csv_size.Text = init_cls.GetDirSize(data["MW"]["CSV_LOC"]) * 1000 + " MB";
             lbl_vvip.Text = init_cls.vipCounter().ToString();
+            lbl_ram.Text = init_cls.GetTotalMemoryInGBytes().ToString() + " GB";
+            lbl_frame.Text = init_cls.GetNetFramework() + " .NET Framework";
             refreshUptime.Enabled = true;
 
             Boolean neurotechLicense = init_cls.NeuroLicense();
@@ -1050,6 +1056,11 @@ namespace idt_diag
         private void button2_Click(object sender, EventArgs e)
         {
             reconn();
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
