@@ -10,6 +10,7 @@ using System.Timers;
 using System.Drawing;
 using System.Data;
 using System.IO;
+using mw_mgr;
 
 namespace idt_diag
 {
@@ -23,12 +24,18 @@ namespace idt_diag
         IniData data;
         IScsServer server;
         String pcName, ipadd, mw_ver, status;
+        DataRow curr_row;
         int client_count = 0;
+        int total = 0;
+        int count = 1;
+        string path;
         private static System.Timers.Timer check_task = new System.Timers.Timer(60000);
         private static System.Timers.Timer restart_pc = new System.Timers.Timer(30000);
         private static System.Timers.Timer get_csv = new System.Timers.Timer(60000);
         private static System.Timers.Timer get_log = new System.Timers.Timer(60000);
         CheckBox checkboxHeader = new CheckBox();
+
+        String[] tasker;
 
         public svr_uc()
         {
@@ -235,16 +242,139 @@ namespace idt_diag
 
         internal void locationCheck()
         {
-            throw new NotImplementedException();
+            tabControl1.SelectedIndex = 1;
+
+            DataSet dat = conn_class.verifyLoc();
+            if (dat == null)
+            {
+                txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+            }
+            else
+            {
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify Location of " + dat.Tables[0].Rows.Count + " data" + Environment.NewLine);
+
+                foreach (DataRow row in dat.Tables[0].Rows)
+                {
+
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify location no: " + row[0].ToString() + Environment.NewLine);
+
+                    if (row[42].ToString() != data["HITDATA"]["AIR_LOC"])
+                    {
+                        row[42] = data["HITDATA"]["AIR_LOC"];
+                    }
+                    count++;
+
+                    if (count % 10000 == 0)
+                    {
+                        conn_class.updateData(dat);
+                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    if (count % 5000 == 0)
+                    {
+                        txt_log.Text = "";
+                    }
+
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify No: " + count + Environment.NewLine);
+                }
+
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+
+                conn_class.updateData(dat);
+                conn_class.disposeAdapter();
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify Location Done!" + Environment.NewLine);
+            }
         }
 
-        public void verifyHitdata()
+        public async void verifyHitdata(string mode)
         {
-            throw new NotImplementedException();
+            tabControl1.SelectedIndex = 1;
+
+            DataSet dat = conn_class.verifyData(mode);
+            if (dat == null)
+            {
+                txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+            }
+            else
+            {
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify Data " + dat.Tables[0].Rows.Count + " data" + Environment.NewLine);
+
+                foreach (DataRow row in dat.Tables[0].Rows)
+                {
+
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify data no: " + row[0].ToString() + Environment.NewLine);
+                    curr_row = null;
+                    curr_row = row;
+                    Task task = Task.Run(new Action(verifyData));
+
+                    task.Wait();
+
+                    count++;
+
+                    if (count % 10000 == 0)
+                    {
+                        conn_class.updateData(dat);
+                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    if (count % 5000 == 0)
+                    {
+                        txt_log.Text = "";
+                    }
+
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify No: " + count + Environment.NewLine);
+                }
+
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+
+                conn_class.updateData(dat);
+                conn_class.disposeAdapter();
+                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Verify Data Done!" + Environment.NewLine);
+
+            }
+        }
+
+        private void verifyData()
+        {
+            try
+            {
+                String directory = data["NETWORK"]["HQSTORE"];
+
+                String preciseDir = directory + @"\Zip\" + Convert.ToDateTime(curr_row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("MM") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("HH");
+ 
+                String m_ExtFNm = curr_row[3] + "_" + curr_row[33] + ".zip";
+                String m_ZipFNm = preciseDir + @"\" + m_ExtFNm;
+
+                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                {
+                    if (unc.NetUseWithCredentials(data["NETWORK"]["HQSTORE"], data["NETWORK"]["USER"], data["NETWORK"]["HQ1"], global_class.DycryptPass(data["NETWORK"]["PASSWORD"])))
+                    {
+                        if (File.Exists(m_ZipFNm))
+                        {
+                            txt_log.AppendText("Data Verified!" + Environment.NewLine);
+                            curr_row[47] = DateTime.Now;
+                        }
+                        else
+                        {
+                            txt_log.AppendText("Data Verified!" + Environment.NewLine);
+                            curr_row[47] = DBNull.Value;
+                        }
+                    }
+                    else
+                    {
+                        txt_log.AppendText("Unable to verify data!" + Environment.NewLine);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                txt_log.AppendText("Error Occured :" + e.Message.ToString()+ Environment.NewLine);
+            }
         }
 
         public async void purgeData()
         {
+            txt_log.Text = "";
             tabControl1.SelectedIndex = 1;
 
             DataSet dat = conn_class.transferHitdataZip("purge");
@@ -253,81 +383,72 @@ namespace idt_diag
             {
                 Boolean repeat = true;
                 int count = 0;
-                do
+
+                if (dat == null)
                 {
-                    if (dat == null)
-                    {
-                        txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
-                    }
-                    else
-                    {
-                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purging Data " + dat.Tables[0].Rows.Count + " data" + Environment.NewLine);
+                    txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+                }
+                else
+                {
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purging Data " + dat.Tables[0].Rows.Count + " data" + Environment.NewLine);
 
-                        foreach (DataRow row in dat.Tables[0].Rows)
+                    foreach (DataRow row in dat.Tables[0].Rows)
+                    {
+
+                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purging data no: " + row[0].ToString() + Environment.NewLine);
+
+                        curr_row = null;
+                        curr_row = row;
+
+                        Task task = Task.Run(new Action(purgeRowData));
+
+                        task.Wait();
+
+                        count++;
+
+                        if (count % 10000 == 0)
                         {
-
-                            txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purging data no: " + row[0].ToString() + Environment.NewLine);
-                            Task<Boolean> task = purgeRowData(row);
-
-                            Boolean results = await task;
-
-                            if (results)
-                            {
-                                txt_log.AppendText("File Deleted!" + Environment.NewLine);
-                                row[48] = DateTime.Now;
-                            }
-                            else
-                            {
-                                txt_log.AppendText("File Not Deleted!" + Environment.NewLine);
-                                row[47] = DBNull.Value;
-                            }
-
-                            count++;
-
-                            if (count % 10000 == 0)
-                            {
-                                conn_class.updateData(dat);
-                                txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
-                            }
-
-                            if (count % 5000 == 0)
-                            {
-                                txt_log.Text = "";
-                            }
-
-                            txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purge No: " + count + Environment.NewLine);
+                            conn_class.updateData(dat);
+                            txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
                         }
 
-                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
-
-                        conn_class.updateData(dat);
-                        conn_class.disposeAdapter();
-
-                        dat = null;
-                        dat = conn_class.transferHitdataZip("purge");
-
-                        if (dat.Tables[0].Rows.Count == 0)
+                        if (count % 5000 == 0)
                         {
-                            repeat = false;
+                            txt_log.Text = "";
                         }
+
+                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purge No: " + count + Environment.NewLine);
                     }
-                } while (repeat == true);
+
+                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+
+                    conn_class.updateData(dat);
+                    conn_class.disposeAdapter();
+
+                    dat = null;
+                    dat = conn_class.transferHitdataZip("purge");
+
+                    if (dat.Tables[0].Rows.Count == 0)
+                    {
+                        repeat = false;
+                    }
+                }
 
                 txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Purge Data Done!" + Environment.NewLine);
             }
         }
 
-        private async Task<Boolean> purgeRowData(DataRow row)
+        private void purgeRowData()
         {
             try
             {
                 String directory = data["NETWORK"]["HQSTORE"];
                 String locDir = data["HITDATA"]["SVR_HITDATA"];
 
-                String preciseDir = directory + @"\Zip\" + Convert.ToDateTime(row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(row[2]).ToString("MM") + @"\" + Convert.ToDateTime(row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(row[2]).ToString("HH");
-                String preciseLocDir = locDir + @"\Zip\" + Convert.ToDateTime(row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(row[2]).ToString("MM") + @"\" + Convert.ToDateTime(row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(row[2]).ToString("HH");
+                String preciseDir = directory + @"\Zip\" + Convert.ToDateTime(curr_row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("MM") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("HH");
+                String preciseLocDir = locDir + @"\Zip\" + Convert.ToDateTime(curr_row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("MM") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("HH");
 
-                String m_ExtFNm = row[3] + "_" + row[33] + ".zip";
+                String m_ExtFNm = curr_row[3] + "_" + curr_row[33] + ".zip";
 
                 String m_ZipFNm = preciseDir + @"\" + m_ExtFNm;
                 String L_ZipFNm = preciseLocDir + @"\" + m_ExtFNm;
@@ -341,23 +462,29 @@ namespace idt_diag
                             if (File.Exists(L_ZipFNm))
                             {
                                 File.Delete(L_ZipFNm);
-                                return true;
+                                txt_log.AppendText("File Deleted!" + Environment.NewLine);
+                                curr_row[48] = DateTime.Now;
+                            }else
+                            {
+                                txt_log.AppendText("File Already Deleted!" + Environment.NewLine);
+                                curr_row[48] = DateTime.Now;
                             }
-                            return true;
-                        }else
+                        }
+                        else
                         {
-                            return false;                        
+                            txt_log.AppendText("File Not Found on HQ!" + Environment.NewLine);
+                            curr_row[47] = DBNull.Value;
                         }
                     }
                     else
                     {
-                        return false;
+                        txt_log.AppendText("File Cannot be accessed!" + Environment.NewLine);
                     }
                 }
             }
             catch (Exception e)
             {
-                return false;
+                txt_log.AppendText("Error occur: " + e.Message.ToString()+Environment.NewLine);
             }
         }
 
@@ -383,6 +510,7 @@ namespace idt_diag
 
         public async void deleteDuplicates()
         {
+            txt_log.Text = "";
             tabControl1.SelectedIndex = 1;
             DataSet pset = conn_class.duplicateData();
             if (pset == null)
@@ -538,11 +666,17 @@ namespace idt_diag
 
         public void transferHit()
         {
+            txt_log.Text = "";
+            tabControl1.SelectedIndex = 1;
+            txt_log.AppendText("Syncing with HQ (only data has been transferred will affected)" + Environment.NewLine);
+            txt_log.AppendText("Please Wait... (This will take several minutes)" + Environment.NewLine);
+
             Boolean transferHit = conn_class.transferHitdata();
 
             if (transferHit)
             {
                 lbl_date.Text = DateTime.Now.ToString();
+                txt_log.AppendText("Data Sync to HQ Done!" + Environment.NewLine);
             }
             else
             {
@@ -550,8 +684,62 @@ namespace idt_diag
             }
         }
 
-        public async void transferZipData()
+        public void transferZipNetwork()
         {
+            txt_log.Text = "";
+            tabControl1.SelectedIndex = 1;
+            DataSet main_dat = conn_class.transferHitdataZip("manual");
+            DataSet serv = conn_class.serverdata();
+
+            int count = 0;
+            if (main_dat == null)
+            {
+                txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+            }
+            else
+            {
+                txt_log.AppendText("Transfering " + main_dat.Tables[0].Rows.Count + " data to HQ Server" + Environment.NewLine);
+
+                foreach (DataRow row in main_dat.Tables[0].Rows)
+                {
+
+                    txt_log.AppendText("Transfering Data no: " + row[0].ToString() + Environment.NewLine);
+                    curr_row = null;
+                    curr_row = row;
+                    path = data["NETWORK"]["HQSTORE"];
+                    Task task = Task.Run(new Action(transferNetworkFile));
+
+                    task.Wait();
+                    count++;
+
+                    if (count % 10000 == 0)
+                    {
+                        conn_class.updateData(main_dat);
+                        txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    if (count % 100000 == 0)
+                    {
+                        txt_log.Text = "";
+                    }
+
+                    txt_log.AppendText("Transfer No: " + count + Environment.NewLine);
+                }
+
+                txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+
+                conn_class.updateData(main_dat);
+                //conn_class.transferToHq(main_dat);
+                transferHit();
+                conn_class.disposeAdapter();
+
+                txt_log.AppendText("Transfer Data Done!" + Environment.NewLine);
+            }
+        }
+
+        public void transferZipData()
+        {
+            txt_log.Text = "";
             tabControl1.SelectedIndex = 1;
             DataSet dat = conn_class.transferHitdataZip("manual");
 
@@ -569,31 +757,24 @@ namespace idt_diag
                 }
                 else
                 {
-                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Transfering " + dat.Tables[0].Rows.Count + " data to " +diag.SelectedPath + Environment.NewLine);
+                    txt_log.AppendText("Transfering " + dat.Tables[0].Rows.Count + " data to " +diag.SelectedPath + Environment.NewLine);
 
                     foreach (DataRow row in dat.Tables[0].Rows)
                     {
 
-                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt")+": Transfering Data no: " + row[0].ToString() + Environment.NewLine);
-                        Task<Boolean> task = transferRowFile(row, diag.SelectedPath);
+                        txt_log.AppendText("Transfering Data no: " + row[0].ToString() + Environment.NewLine);
+                        curr_row = null;
+                        curr_row = row;
+                        path = diag.SelectedPath;
+                        Task task = Task.Run(new Action(transferRowFile));
 
-                        Boolean results = await task;
-
-                        if (results)
-                        {
-                            txt_log.AppendText("File Transferred Done!" + Environment.NewLine);
-                        }
-                        else
-                        {
-                            txt_log.AppendText("File Transferred Failed!" + Environment.NewLine);
-                        }
-
+                        task.Wait();
                         count++;
 
                         if(count%10000 == 0)
                         {
                             conn_class.updateData(dat);
-                            txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                            txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
                         }
 
                         if (count % 100000 == 0)
@@ -601,27 +782,27 @@ namespace idt_diag
                             txt_log.Text = "";
                         }
 
-                        txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Transfer No: " + count + Environment.NewLine);
+                        txt_log.AppendText("Transfer No: " + count + Environment.NewLine);
                     }
 
-                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                    txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
 
                     conn_class.updateData(dat);
                     conn_class.disposeAdapter();
 
-                    txt_log.AppendText(DateTime.Now.ToString("hh:mm:ss tt") + ": Transfer Data Done!" + Environment.NewLine);
+                    txt_log.AppendText("Transfer Data Done!" + Environment.NewLine);
                 }
             }  
         }
 
-        public async Task<Boolean> transferRowFile(DataRow row, string path)
+        public void transferRowFile()
         {
             try
             {
                 String directory = data["HITDATA"]["SVR_HITDATA"];
-                String zipDir = @"\Zip\" + Convert.ToDateTime(row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(row[2]).ToString("MM") + @"\" + Convert.ToDateTime(row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(row[2]).ToString("HH");
+                String zipDir = @"\Zip\" + Convert.ToDateTime(curr_row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("MM") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("HH");
                 String preciseDir = directory + zipDir;
-                String m_ExtFNm = row[3] + "_" + row[33] + ".zip";
+                String m_ExtFNm = curr_row[3] + "_" + curr_row[33] + ".zip";
                 String m_ZipFNm = preciseDir + @"\" + m_ExtFNm;
 
 
@@ -630,13 +811,38 @@ namespace idt_diag
                     Directory.CreateDirectory(path + zipDir);
                 }
                 File.Copy(m_ZipFNm, path + zipDir + @"\" + m_ExtFNm);
-                row[47] = DateTime.Now;
-                return true;
+                curr_row[47] = DateTime.Now;
+                txt_log.AppendText("File Transferred Done!" + Environment.NewLine);
             }
             catch (Exception e)
             {
-                txt_log.BeginInvoke(new Action(()=> txt_log.AppendText("File Transferred Error Due: " + e.Message + Environment.NewLine)));
-                return false; 
+                txt_log.AppendText("File Transferred Failed!" + Environment.NewLine);
+            }
+        }
+
+        public void transferNetworkFile()
+        {
+            try
+            {
+                String directory = data["HITDATA"]["SVR_HITDATA"];
+                String zipDir = @"\Zip\" + Convert.ToDateTime(curr_row[2]).ToString("yyyy") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("MM") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("yyyyMMdd") + @"\" + Convert.ToDateTime(curr_row[2]).ToString("HH");
+                String preciseDir = directory + zipDir;
+                String m_ExtFNm = curr_row[3] + "_" + curr_row[33] + ".zip";
+                String m_ZipFNm = preciseDir + @"\" + m_ExtFNm;
+
+
+                if (!Directory.Exists(path + zipDir))
+                {
+                    Directory.CreateDirectory(path + zipDir);
+                }
+                File.Copy(m_ZipFNm, path + zipDir + @"\" + m_ExtFNm,true);
+                curr_row[47] = DateTime.Now;
+
+                txt_log.AppendText("File Transferred Done!" + Environment.NewLine);
+            }
+            catch (Exception e)
+            {
+                txt_log.AppendText("File Transferred Failed! Due to :"+e.Message.ToString()+  Environment.NewLine);
             }
         }
     }

@@ -42,3 +42,4 @@ D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csproj.GenerateResource.Cache
 D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.exe
 D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.pdb
 D:\Projects\idt_diag\idt_diag\obj\Debug\idt_diag.csprojResolveAssemblyReference.cache
+D:\Projects\idt_diag\idt_diag\obj\Debug\mw_mgr.comp_obj.resources

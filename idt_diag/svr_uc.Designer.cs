@@ -45,10 +45,13 @@
             this.tabpage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.txt_log = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_svr)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabpage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv_svr
@@ -176,6 +179,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabpage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(6, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -220,6 +224,25 @@
             this.txt_log.Size = new System.Drawing.Size(601, 518);
             this.txt_log.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.listView1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(613, 530);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Client";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            this.listView1.Location = new System.Drawing.Point(3, 6);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(604, 518);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
             // svr_uc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -235,6 +258,7 @@
             this.tabpage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -258,5 +282,7 @@
         private System.Windows.Forms.TabPage tabpage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox txt_log;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ListView listView1;
     }
 }
