@@ -16,24 +16,28 @@ namespace idt_diag
 {
     public partial class svr_uc : UserControl
     {
-        global global_class = new global();
-        init init_cls = new init();
-        db_conn conn_class = new db_conn();
-        Boolean get_msg = false;
+        int client_count         = 0;
+        int total                = 0;
+        int count                = 1;
+
+        String pcName, ipadd, mw_ver, status, path;
+        String[] tasker;
+
+        global global_class      = new global();
+        init init_cls            = new init();
+        db_conn conn_class       = new db_conn();
         FileIniDataParser parser = new FileIniDataParser();
         IniData data;
         IScsServer server;
-        String pcName, ipadd, mw_ver, status;
         DataRow curr_row;
-        int client_count = 0;
-        int total = 0;
-        int count = 1;
-        string path;
+        CheckBox checkboxHeader  = new CheckBox();
+
+        Boolean get_msg          = false;
+
         private static System.Timers.Timer check_task = new System.Timers.Timer(60000);
         private static System.Timers.Timer restart_pc = new System.Timers.Timer(30000);
-        private static System.Timers.Timer get_csv = new System.Timers.Timer(60000);
-        private static System.Timers.Timer get_log = new System.Timers.Timer(60000);
-        CheckBox checkboxHeader = new CheckBox();
+        private static System.Timers.Timer get_csv    = new System.Timers.Timer(60000);
+        private static System.Timers.Timer get_log    = new System.Timers.Timer(60000);
 
         String[] tasker;
 
@@ -44,16 +48,16 @@ namespace idt_diag
 
         private void svr_uc_Load(object sender, EventArgs e)
         {
-            var parser = new FileIniDataParser();
-            data = parser.ReadFile("app_set.ini");
-            server = ScsServerFactory.CreateServer(new ScsTcpEndPoint(int.Parse(data["NETWORK"]["MULTI_PORT"])));
-            server.ClientConnected += Server_ClientConnected;
-            server.ClientDisconnected += Server_ClientDisconnected;
-            restart_pc.Elapsed += Restart_pc_Elapsed;
-            check_task.Elapsed += Check_task_Elapsed;
+            var parser  = new FileIniDataParser();
+            data        = parser.ReadFile("app_set.ini");
+            server      = ScsServerFactory.CreateServer(new ScsTcpEndPoint(int.Parse(data["NETWORK"]["MULTI_PORT"])));
 
-            get_csv.Elapsed += Get_csv_Elapsed;
-            get_log.Elapsed += Get_log_Elapsed;
+            server.ClientConnected    += Server_ClientConnected;
+            server.ClientDisconnected += Server_ClientDisconnected;
+            restart_pc.Elapsed        += Restart_pc_Elapsed;
+            check_task.Elapsed        += Check_task_Elapsed;
+            get_csv.Elapsed           += Get_csv_Elapsed;
+            get_log.Elapsed           += Get_log_Elapsed;
 
             get_csv.Enabled = true;
             get_log.Enabled = true; 
@@ -286,7 +290,7 @@ namespace idt_diag
             }
         }
 
-        public async void verifyHitdata(string mode)
+        public void verifyHitdata(string mode)
         {
             tabControl1.SelectedIndex = 1;
 
@@ -666,17 +670,17 @@ namespace idt_diag
 
         public void transferHit()
         {
-            txt_log.Text = "";
+            loggerWriter("");
             tabControl1.SelectedIndex = 1;
-            txt_log.AppendText("Syncing with HQ (only data has been transferred will affected)" + Environment.NewLine);
-            txt_log.AppendText("Please Wait... (This will take several minutes)" + Environment.NewLine);
+            loggerWriter("Syncing with HQ (only data has been transferred will affected)");
+            loggerWriter("Please Wait... (This will take several minutes)");
 
             Boolean transferHit = conn_class.transferHitdata();
 
             if (transferHit)
             {
                 lbl_date.Text = DateTime.Now.ToString();
-                txt_log.AppendText("Data Sync to HQ Done!" + Environment.NewLine);
+                loggerWriter("Data Sync to HQ Done!");
             }
             else
             {
@@ -694,16 +698,16 @@ namespace idt_diag
             int count = 0;
             if (main_dat == null)
             {
-                txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+                loggerWriter("Error connecting to DB!");
             }
             else
             {
-                txt_log.AppendText("Transfering " + main_dat.Tables[0].Rows.Count + " data to HQ Server" + Environment.NewLine);
+                loggerWriter("Transfering " + main_dat.Tables[0].Rows.Count + " data to HQ Server");
 
                 foreach (DataRow row in main_dat.Tables[0].Rows)
                 {
 
-                    txt_log.AppendText("Transfering Data no: " + row[0].ToString() + Environment.NewLine);
+                    loggerWriter("Transfering Data no: " + row[0].ToString());
                     curr_row = null;
                     curr_row = row;
                     path = data["NETWORK"]["HQSTORE"];
@@ -715,7 +719,7 @@ namespace idt_diag
                     if (count % 10000 == 0)
                     {
                         conn_class.updateData(main_dat);
-                        txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                        loggerWriter("Commiting Changes");
                     }
 
                     if (count % 100000 == 0)
@@ -723,23 +727,23 @@ namespace idt_diag
                         txt_log.Text = "";
                     }
 
-                    txt_log.AppendText("Transfer No: " + count + Environment.NewLine);
+                    loggerWriter("Transfer No: " + count);
                 }
 
-                txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                loggerWriter("Commiting Changes");
 
                 conn_class.updateData(main_dat);
                 //conn_class.transferToHq(main_dat);
                 transferHit();
                 conn_class.disposeAdapter();
 
-                txt_log.AppendText("Transfer Data Done!" + Environment.NewLine);
+                loggerWriter("Transfer Data Done!");
             }
         }
 
         public void transferZipData()
         {
-            txt_log.Text = "";
+            loggerWriter("");
             tabControl1.SelectedIndex = 1;
             DataSet dat = conn_class.transferHitdataZip("manual");
 
@@ -753,16 +757,16 @@ namespace idt_diag
                 int count = 0;
                 if (dat == null)
                 {
-                    txt_log.AppendText("Error connecting to DB!" + Environment.NewLine);
+                    loggerWriter("Error connecting to DB!");
                 }
                 else
                 {
-                    txt_log.AppendText("Transfering " + dat.Tables[0].Rows.Count + " data to " +diag.SelectedPath + Environment.NewLine);
+                    loggerWriter("Transfering " + dat.Tables[0].Rows.Count + " data to " +diag.SelectedPath);
 
                     foreach (DataRow row in dat.Tables[0].Rows)
                     {
 
-                        txt_log.AppendText("Transfering Data no: " + row[0].ToString() + Environment.NewLine);
+                        loggerWriter("Transfering Data no: " + row[0].ToString());
                         curr_row = null;
                         curr_row = row;
                         path = diag.SelectedPath;
@@ -774,7 +778,7 @@ namespace idt_diag
                         if(count%10000 == 0)
                         {
                             conn_class.updateData(dat);
-                            txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                            loggerWriter("Commiting Changes" + Environment.NewLine);
                         }
 
                         if (count % 100000 == 0)
@@ -782,20 +786,20 @@ namespace idt_diag
                             txt_log.Text = "";
                         }
 
-                        txt_log.AppendText("Transfer No: " + count + Environment.NewLine);
+                        loggerWriter("Transfer No: " + count);
                     }
 
-                    txt_log.AppendText("Commiting Changes" + Environment.NewLine + Environment.NewLine);
+                    loggerWriter("Commiting Changes" + Environment.NewLine);
 
                     conn_class.updateData(dat);
                     conn_class.disposeAdapter();
 
-                    txt_log.AppendText("Transfer Data Done!" + Environment.NewLine);
+                    loggerWriter("Transfer Data Done!");
                 }
             }  
         }
 
-        public void transferRowFile()
+        private void transferRowFile()
         {
             try
             {
@@ -812,15 +816,15 @@ namespace idt_diag
                 }
                 File.Copy(m_ZipFNm, path + zipDir + @"\" + m_ExtFNm);
                 curr_row[47] = DateTime.Now;
-                txt_log.AppendText("File Transferred Done!" + Environment.NewLine);
+                loggerWriter("File Transferred Done!");
             }
             catch (Exception e)
             {
-                txt_log.AppendText("File Transferred Failed!" + Environment.NewLine);
+                loggerWriter("File Transferred Failed! Due to:"+e.Message.ToString());
             }
         }
 
-        public void transferNetworkFile()
+        private void transferNetworkFile()
         {
             try
             {
@@ -838,11 +842,23 @@ namespace idt_diag
                 File.Copy(m_ZipFNm, path + zipDir + @"\" + m_ExtFNm,true);
                 curr_row[47] = DateTime.Now;
 
-                txt_log.AppendText("File Transferred Done!" + Environment.NewLine);
+                loggerWriter("File Transferred Done!");
             }
             catch (Exception e)
             {
-                txt_log.AppendText("File Transferred Failed! Due to :"+e.Message.ToString()+  Environment.NewLine);
+                loggerWriter("File Transferred Failed! Due to :"+e.Message.ToString());
+            }
+        }
+
+        private void loggerWriter(String msg)
+        {
+            if(msg == "")
+            {
+                txt_log.Text = "";
+            }
+            else
+            {
+                txt_log.AppendText(msg + Environment.NewLine);
             }
         }
     }
